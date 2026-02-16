@@ -4,7 +4,7 @@ author: "Nicholas Irons and Carlos Cinelli"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{brease}
+  %\VignetteIndexEntry{An introduction to the BREASE framework}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
