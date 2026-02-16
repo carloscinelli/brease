@@ -26,6 +26,60 @@
 "aspirin"
 
 
+#' Pfizer COVID-19 Vaccine Trial
+#'
+#' @description Data from the Pfizer-BioNTech COVID-19 vaccine trial
+#'   (Polack et al., 2020), a large-scale randomized trial studying vaccine
+#'   efficacy against symptomatic COVID-19. 40,137 participants were
+#'   randomized to vaccine or placebo.
+#'
+#' @format A data frame with 1 row and 4 variables:
+#' \describe{
+#'   \item{y0}{Number of COVID-19 cases in the placebo group (169).}
+#'   \item{N0}{Number of subjects in the placebo group (20,172).}
+#'   \item{y1}{Number of COVID-19 cases in the vaccine group (9).}
+#'   \item{N1}{Number of subjects in the vaccine group (19,965).}
+#' }
+#'
+#' @references
+#' Polack, F.P., Thomas, S.J., Kitchin, N. et al. (2020). Safety and
+#' Efficacy of the BNT162b2 mRNA Covid-19 Vaccine. \emph{New England
+#' Journal of Medicine}, 383(27), 2603--2615.
+#'
+#' Irons, N.J. and Cinelli, C. (2025). Causally Sound Priors for Binary
+#' Experiments. \emph{Bayesian Analysis}. \doi{10.1214/25-BA1506}
+#'
+#' @examples
+#' data(pfizer)
+#' brease(pfizer$y0, pfizer$y1, pfizer$N0, pfizer$N1)
+"pfizer"
+
+
+#' Aspirin Meta-Analysis Dataset
+#'
+#' @description Data from 13 randomized controlled trials studying the effect
+#'   of aspirin on myocardial infarction (MI), used for meta-analysis in
+#'   Irons and Cinelli (2025). Each row is a separate study.
+#'
+#' @format A data frame with 13 rows and 5 variables:
+#' \describe{
+#'   \item{Study}{Study name.}
+#'   \item{y1}{Number of MI events in the aspirin (treatment) group.}
+#'   \item{N1}{Number of subjects in the aspirin (treatment) group.}
+#'   \item{y0}{Number of MI events in the placebo (control) group.}
+#'   \item{N0}{Number of subjects in the placebo (control) group.}
+#' }
+#'
+#' @references
+#' Irons, N.J. and Cinelli, C. (2025). Causally Sound Priors for Binary
+#' Experiments. \emph{Bayesian Analysis}. \doi{10.1214/25-BA1506}
+#'
+#' @examples
+#' data(aspirin_meta)
+#' head(aspirin_meta)
+"aspirin_meta"
+
+
 #' NEJM Clinical Trials Dataset
 #'
 #' @description A collection of 39 clinical trials published in the
