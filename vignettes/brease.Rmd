@@ -1,0 +1,109 @@
+---
+title: "An introduction to the BREASE framework"
+author: "Nicholas Irons and Carlos Cinelli"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{brease}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 6,
+  fig.height = 4
+)
+```
+
+## Overview
+
+The `brease` package implements the BREASE (**B**aseline **R**isk, **E**fficacy, and **A**dverse **S**ide **E**ffects) framework for Bayesian analysis of randomized controlled trials with binary treatment and binary outcome, as described in [Irons and Cinelli (2025)](https://doi.org/10.1214/25-BA1506).
+
+## The BREASE Parameterization
+
+Consider a two-arm binary experiment where:
+
+- $N_0$ subjects receive control and $y_0$ have the event
+- $N_1$ subjects receive treatment and $y_1$ have the event
+
+The BREASE framework parameterizes the model in terms of three causal quantities:
+
+- **Baseline risk** $\theta_0 = P(Y(0) = 1)$: the probability of the event without treatment
+- **Efficacy** $\eta_e$: the fraction of would-be cases that are prevented by treatment
+- **Side-effect risk** $\eta_s$: the fraction of would-be non-cases that are harmed by treatment
+
+The treatment group risk is then:
+$$\theta_1 = \theta_0(1 - \eta_e) + (1 - \theta_0)\eta_s$$
+
+## Specifying Priors
+
+Independent Beta priors are placed on the three causal parameters:
+
+- $\theta_0 \sim \text{Beta}(\mu_0 n_0, (1-\mu_0)n_0)$
+- $\eta_e \sim \text{Beta}(\mu_e n_e, (1-\mu_e)n_e)$
+- $\eta_s \sim \text{Beta}(\mu_s n_s, (1-\mu_s)n_s)$
+
+The default prior `BREASE(1/2, 0.3, 0.3; 2, 1, 1)` places uniform marginal priors on the outcome probabilities and centers both efficacy and side-effect risk at 0.3 with prior sample size 1.
+
+```{r prior}
+library(brease)
+
+# Simulate from the default prior
+prior_samps <- sim_brease(10000)
+plot(prior_samps$theta0, prior_samps$theta1,
+     pch = ".", col = adjustcolor("steelblue", 0.3),
+     xlab = expression(theta[0]), ylab = expression(theta[1]),
+     main = "BREASE Default Prior")
+abline(0, 1, lty = 2, col = "red")
+```
+
+## Example: Aspirin and Myocardial Infarction
+
+The Physicians' Health Study (1989) randomized 22,071 male physicians to aspirin or placebo and observed myocardial infarctions (MI).
+
+```{r aspirin}
+# Data: 26 MIs in control (N=11,034), 10 MIs in treatment (N=11,037)
+result <- brease(y0 = 26, y1 = 10, N0 = 11034, N1 = 11037)
+result
+```
+
+The posterior summaries show the risk ratio and efficacy fraction, and the Bayes factor quantifies the evidence for a treatment effect.
+
+## Sensitivity Analysis
+
+We can examine how the Bayes factor changes across different prior specifications:
+
+```{r sensitivity, fig.width=5, fig.height=5}
+sens <- bf_seq(y0 = 26, y1 = 10, N0 = 11034, N1 = 11037,
+               mus_seq = seq(0.01, 0.99, length = 15),
+               mue_seq = seq(0.01, 0.99, length = 15))
+contour_bf(sens)
+```
+
+## Comparison with Other Methods
+
+The package also implements the Independent Beta (IB) and Logit-Transform (LT) approaches for comparison:
+
+```{r comparison}
+# Independent Beta
+ib_result <- brease_ib(y0 = 26, y1 = 10, N0 = 11034, N1 = 11037)
+ib_result
+```
+
+## COVID Vaccine Trial
+
+As a second example, consider the Pfizer COVID-19 vaccine trial:
+
+```{r covid}
+result_covid <- brease(y0 = 169, y1 = 9, N0 = 20172, N1 = 19965)
+result_covid
+```
+
+The very strong Bayes factor reflects the overwhelming evidence for vaccine efficacy.
+
+## References
+
+Irons, N.J. and Cinelli, C. (2025). Causally Sound Priors for Binary Experiments. *Bayesian Analysis*. doi:10.1214/25-BA1506

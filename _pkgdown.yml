@@ -1,0 +1,71 @@
+url: https://carloscinelli.com/brease/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:  [intro, reference, articles]
+    right: [github]
+  components:
+    intro:
+      text: Get Started
+      href: articles/brease.html
+
+reference:
+  - title: BREASE Analysis
+    desc: Main analysis functions
+    contents:
+      - brease
+      - brease_ib
+      - brease_lt
+
+  - title: Posterior Sampling
+    desc: Direct access to sampling functions
+    contents:
+      - sample_brease
+      - sample_brease_mono
+      - gibbs_brease
+      - stan_brease
+      - jags_brease
+
+  - title: Prior Simulation
+    desc: Simulate from prior distributions
+    contents:
+      - sim_brease
+      - sim_ib
+      - sim_lt
+      - log_prior_brease
+
+  - title: Marginal Likelihoods and Bayes Factors
+    desc: Analytic marginal likelihoods and Bayes factors
+    contents:
+      - lml_brease
+      - lml_brease_h0
+      - lml_brease_mono
+      - bf_brease
+      - bf_brease_mono
+
+  - title: Sensitivity Analysis
+    desc: Sensitivity of results to prior specification
+    contents:
+      - bf_seq
+      - contour_bf
+      - side_plot
+
+  - title: Bounds
+    desc: Bounds on probabilities of causation
+    contents:
+      - brease_bounds
+
+  - title: Data
+    desc: Example datasets
+    contents:
+      - aspirin
+      - nejm
+
+authors:
+  Nicholas Irons:
+    href: https://njirons.github.io/
+  Carlos Cinelli:
+    href: https://carloscinelli.com

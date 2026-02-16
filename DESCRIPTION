@@ -1,0 +1,41 @@
+Package: brease
+Type: Package
+Title: Causally Sound Priors for Binary Experiments
+Version: 0.1.0
+Authors@R: c(
+    person("Nicholas", "Irons", role = c("aut"),
+           comment = c(ORCID = "0000-0003-4599-7744")),
+    person("Carlos", "Cinelli", role = c("aut", "cre"),
+           email = "cinellic@uw.edu",
+           comment = c(ORCID = "0000-0002-6468-2812"))
+  )
+Description: Implements the BREASE framework for Bayesian analysis of
+    randomized controlled trials with binary outcomes. Parameterizes the
+    likelihood in terms of baseline risk, efficacy, and adverse side effects,
+    with independent Beta priors that induce dependence between treatment
+    arms. Provides exact posterior sampling, analytic marginal likelihoods,
+    Bayes factors, and sensitivity analysis tools. Methods based on
+    Irons and Cinelli (2025) <doi:10.1214/25-BA1506>.
+License: GPL-3 + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 3.5.0)
+Imports:
+    stats,
+    graphics,
+    grDevices
+Suggests:
+    testthat (>= 3.0.0),
+    abtest,
+    rstan,
+    rjags,
+    coda,
+    MASS,
+    parallel,
+    knitr,
+    rmarkdown
+Config/testthat/edition: 3
+RoxygenNote: 7.3.2
+VignetteBuilder: knitr
+URL: https://carloscinelli.com/brease/
+BugReports: https://github.com/carloscinelli/brease/issues
