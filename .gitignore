@@ -7,4 +7,3 @@ inst/doc
 tests/testthat/Rplots.pdf
 *.Rcheck/
 *.tar.gz
-docs/

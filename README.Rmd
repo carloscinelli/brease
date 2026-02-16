@@ -1,0 +1,101 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.align = "center",
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  dpi = 300
+)
+```
+
+# brease: Causally Sound Priors for Binary Experiments
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/carloscinelli/brease/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/carloscinelli/brease/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+The `brease` R package implements the **BREASE** (**B**aseline **R**isk, **E**fficacy, and **A**dverse **S**ide **E**ffects) framework for Bayesian analysis of randomized controlled trials with binary treatment and binary outcome, as described in:
+
+> Irons, N.J. and Cinelli, C. (2025). [Causally Sound Priors for Binary Experiments](https://doi.org/10.1214/25-BA1506). *Bayesian Analysis*.
+
+## Installation
+
+You can install the development version from GitHub:
+
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("carloscinelli/brease")
+```
+
+## Basic Usage
+
+```{r}
+# loads package
+library(brease)
+
+# loads data
+data("aspirin")
+
+# Aspirin and Myocardial Infarction (Physicians' Health Study)
+# 26 MIs in control (N = 11,034), 10 MIs in treatment (N = 11,037)
+result <- brease(y0 = aspirin$y0, y1 = aspirin$y1,
+                 N0 = aspirin$N0, N1 = aspirin$N1)
+result
+```
+
+```{r summary}
+summary(result)
+```
+
+### Posterior Plots
+
+```{r posterior-plots, fig.width = 8, fig.height = 3.5}
+plot(result, which = c("theta0", "theta1", "eta_e", "eta_s"))
+```
+
+### Sensitivity Analysis
+
+We can examine how the Bayes factor changes across different prior specifications using contour plots:
+
+```{r sensitivity, fig.width = 5, fig.height = 5}
+sens <- bf_seq(y0 = aspirin$y0, y1 = aspirin$y1,
+               N0 = aspirin$N0, N1 = aspirin$N1,
+               mus_seq = seq(0.01, 0.99, length = 15),
+               mue_seq = seq(0.01, 0.99, length = 15))
+contour_bf(sens)
+```
+
+## Overview
+
+The BREASE framework parameterizes the likelihood of a binary experiment in terms of three clinically meaningful causal quantities:
+
+- **Baseline risk** ($\theta_0$): probability of the event without treatment
+- **Efficacy** ($\eta_e$): fraction of would-be cases prevented by treatment
+- **Side-effect risk** ($\eta_s$): fraction of would-be non-cases harmed by treatment
+
+The package provides:
+
+- **Exact posterior sampling** and analytic marginal likelihoods/Bayes factors
+- **Optional MCMC backends** via Stan or JAGS
+- **Sensitivity analysis** tools (contour plots, side-effect sensitivity)
+- **Comparison methods**: Independent Beta and Logit-Transform priors
+- **Bounds** on probabilities of causation
+
+## Documentation
+
+For a detailed introduction, see the [package vignette](https://carloscinelli.com/brease/articles/brease.html).
+
+## Citation
+
+If you use this package, please cite:
+
+```
+Irons, N.J. and Cinelli, C. (2025). Causally Sound Priors for Binary
+Experiments. Bayesian Analysis. doi:10.1214/25-BA1506
+```

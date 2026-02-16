@@ -24,8 +24,12 @@ reference:
     desc: Main analysis functions
     contents:
       - brease
+      - brease-package
       - brease_ib
       - brease_lt
+      - plot.brease
+      - print.brease
+      - summary.brease
 
   - title: Posterior Sampling
     desc: Direct access to sampling functions
